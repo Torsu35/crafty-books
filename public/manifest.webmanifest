@@ -1,0 +1,15 @@
+{
+  "name": "Ledger — Offline Accounting",
+  "short_name": "Ledger",
+  "description": "Offline-first bookkeeping for sole proprietors.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f1b3d",
+  "theme_color": "#0f1b3d",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

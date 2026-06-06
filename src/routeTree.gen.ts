@@ -9,38 +9,290 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SetupRouteImport } from './routes/setup'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SalesRouteImport } from './routes/sales'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as PurchasesRouteImport } from './routes/purchases'
+import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as ExpensesRouteImport } from './routes/expenses'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as BackupRouteImport } from './routes/backup'
+import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SalesNewRouteImport } from './routes/sales.new'
+import { Route as PurchasesNewRouteImport } from './routes/purchases.new'
+import { Route as InventoryNewRouteImport } from './routes/inventory.new'
+import { Route as ExpensesNewRouteImport } from './routes/expenses.new'
 
+const SetupRoute = SetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalesRoute = SalesRouteImport.update({
+  id: '/sales',
+  path: '/sales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PurchasesRoute = PurchasesRouteImport.update({
+  id: '/purchases',
+  path: '/purchases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InventoryRoute = InventoryRouteImport.update({
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpensesRoute = ExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackupRoute = BackupRouteImport.update({
+  id: '/backup',
+  path: '/backup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountsRoute = AccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalesNewRoute = SalesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => SalesRoute,
+} as any)
+const PurchasesNewRoute = PurchasesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => PurchasesRoute,
+} as any)
+const InventoryNewRoute = InventoryNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => InventoryRoute,
+} as any)
+const ExpensesNewRoute = ExpensesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ExpensesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsRoute
+  '/backup': typeof BackupRoute
+  '/dashboard': typeof DashboardRoute
+  '/expenses': typeof ExpensesRouteWithChildren
+  '/inventory': typeof InventoryRouteWithChildren
+  '/purchases': typeof PurchasesRouteWithChildren
+  '/reports': typeof ReportsRoute
+  '/sales': typeof SalesRouteWithChildren
+  '/settings': typeof SettingsRoute
+  '/setup': typeof SetupRoute
+  '/expenses/new': typeof ExpensesNewRoute
+  '/inventory/new': typeof InventoryNewRoute
+  '/purchases/new': typeof PurchasesNewRoute
+  '/sales/new': typeof SalesNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsRoute
+  '/backup': typeof BackupRoute
+  '/dashboard': typeof DashboardRoute
+  '/expenses': typeof ExpensesRouteWithChildren
+  '/inventory': typeof InventoryRouteWithChildren
+  '/purchases': typeof PurchasesRouteWithChildren
+  '/reports': typeof ReportsRoute
+  '/sales': typeof SalesRouteWithChildren
+  '/settings': typeof SettingsRoute
+  '/setup': typeof SetupRoute
+  '/expenses/new': typeof ExpensesNewRoute
+  '/inventory/new': typeof InventoryNewRoute
+  '/purchases/new': typeof PurchasesNewRoute
+  '/sales/new': typeof SalesNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/accounts': typeof AccountsRoute
+  '/backup': typeof BackupRoute
+  '/dashboard': typeof DashboardRoute
+  '/expenses': typeof ExpensesRouteWithChildren
+  '/inventory': typeof InventoryRouteWithChildren
+  '/purchases': typeof PurchasesRouteWithChildren
+  '/reports': typeof ReportsRoute
+  '/sales': typeof SalesRouteWithChildren
+  '/settings': typeof SettingsRoute
+  '/setup': typeof SetupRoute
+  '/expenses/new': typeof ExpensesNewRoute
+  '/inventory/new': typeof InventoryNewRoute
+  '/purchases/new': typeof PurchasesNewRoute
+  '/sales/new': typeof SalesNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/accounts'
+    | '/backup'
+    | '/dashboard'
+    | '/expenses'
+    | '/inventory'
+    | '/purchases'
+    | '/reports'
+    | '/sales'
+    | '/settings'
+    | '/setup'
+    | '/expenses/new'
+    | '/inventory/new'
+    | '/purchases/new'
+    | '/sales/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/accounts'
+    | '/backup'
+    | '/dashboard'
+    | '/expenses'
+    | '/inventory'
+    | '/purchases'
+    | '/reports'
+    | '/sales'
+    | '/settings'
+    | '/setup'
+    | '/expenses/new'
+    | '/inventory/new'
+    | '/purchases/new'
+    | '/sales/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/accounts'
+    | '/backup'
+    | '/dashboard'
+    | '/expenses'
+    | '/inventory'
+    | '/purchases'
+    | '/reports'
+    | '/sales'
+    | '/settings'
+    | '/setup'
+    | '/expenses/new'
+    | '/inventory/new'
+    | '/purchases/new'
+    | '/sales/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountsRoute: typeof AccountsRoute
+  BackupRoute: typeof BackupRoute
+  DashboardRoute: typeof DashboardRoute
+  ExpensesRoute: typeof ExpensesRouteWithChildren
+  InventoryRoute: typeof InventoryRouteWithChildren
+  PurchasesRoute: typeof PurchasesRouteWithChildren
+  ReportsRoute: typeof ReportsRoute
+  SalesRoute: typeof SalesRouteWithChildren
+  SettingsRoute: typeof SettingsRoute
+  SetupRoute: typeof SetupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/setup': {
+      id: '/setup'
+      path: '/setup'
+      fullPath: '/setup'
+      preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sales': {
+      id: '/sales'
+      path: '/sales'
+      fullPath: '/sales'
+      preLoaderRoute: typeof SalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/purchases': {
+      id: '/purchases'
+      path: '/purchases'
+      fullPath: '/purchases'
+      preLoaderRoute: typeof PurchasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory': {
+      id: '/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expenses': {
+      id: '/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof ExpensesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backup': {
+      id: '/backup'
+      path: '/backup'
+      fullPath: '/backup'
+      preLoaderRoute: typeof BackupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accounts': {
+      id: '/accounts'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AccountsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +300,96 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sales/new': {
+      id: '/sales/new'
+      path: '/new'
+      fullPath: '/sales/new'
+      preLoaderRoute: typeof SalesNewRouteImport
+      parentRoute: typeof SalesRoute
+    }
+    '/purchases/new': {
+      id: '/purchases/new'
+      path: '/new'
+      fullPath: '/purchases/new'
+      preLoaderRoute: typeof PurchasesNewRouteImport
+      parentRoute: typeof PurchasesRoute
+    }
+    '/inventory/new': {
+      id: '/inventory/new'
+      path: '/new'
+      fullPath: '/inventory/new'
+      preLoaderRoute: typeof InventoryNewRouteImport
+      parentRoute: typeof InventoryRoute
+    }
+    '/expenses/new': {
+      id: '/expenses/new'
+      path: '/new'
+      fullPath: '/expenses/new'
+      preLoaderRoute: typeof ExpensesNewRouteImport
+      parentRoute: typeof ExpensesRoute
+    }
   }
 }
 
+interface ExpensesRouteChildren {
+  ExpensesNewRoute: typeof ExpensesNewRoute
+}
+
+const ExpensesRouteChildren: ExpensesRouteChildren = {
+  ExpensesNewRoute: ExpensesNewRoute,
+}
+
+const ExpensesRouteWithChildren = ExpensesRoute._addFileChildren(
+  ExpensesRouteChildren,
+)
+
+interface InventoryRouteChildren {
+  InventoryNewRoute: typeof InventoryNewRoute
+}
+
+const InventoryRouteChildren: InventoryRouteChildren = {
+  InventoryNewRoute: InventoryNewRoute,
+}
+
+const InventoryRouteWithChildren = InventoryRoute._addFileChildren(
+  InventoryRouteChildren,
+)
+
+interface PurchasesRouteChildren {
+  PurchasesNewRoute: typeof PurchasesNewRoute
+}
+
+const PurchasesRouteChildren: PurchasesRouteChildren = {
+  PurchasesNewRoute: PurchasesNewRoute,
+}
+
+const PurchasesRouteWithChildren = PurchasesRoute._addFileChildren(
+  PurchasesRouteChildren,
+)
+
+interface SalesRouteChildren {
+  SalesNewRoute: typeof SalesNewRoute
+}
+
+const SalesRouteChildren: SalesRouteChildren = {
+  SalesNewRoute: SalesNewRoute,
+}
+
+const SalesRouteWithChildren = SalesRoute._addFileChildren(SalesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountsRoute: AccountsRoute,
+  BackupRoute: BackupRoute,
+  DashboardRoute: DashboardRoute,
+  ExpensesRoute: ExpensesRouteWithChildren,
+  InventoryRoute: InventoryRouteWithChildren,
+  PurchasesRoute: PurchasesRouteWithChildren,
+  ReportsRoute: ReportsRoute,
+  SalesRoute: SalesRouteWithChildren,
+  SettingsRoute: SettingsRoute,
+  SetupRoute: SetupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
