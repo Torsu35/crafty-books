@@ -10,12 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SetupRouteImport } from './routes/setup'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SalesRouteImport } from './routes/sales'
 import { Route as ReportsRouteImport } from './routes/reports'
 import { Route as PurchasesRouteImport } from './routes/purchases'
 import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as ExpensesRouteImport } from './routes/expenses'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as BackupRouteImport } from './routes/backup'
 import { Route as AccountsRouteImport } from './routes/accounts'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalesNewRouteImport } from './routes/sales.new'
@@ -26,6 +28,11 @@ import { Route as ExpensesNewRouteImport } from './routes/expenses.new'
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
   path: '/setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SalesRoute = SalesRouteImport.update({
@@ -56,6 +63,11 @@ const ExpensesRoute = ExpensesRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackupRoute = BackupRouteImport.update({
+  id: '/backup',
+  path: '/backup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountsRoute = AccountsRouteImport.update({
@@ -92,12 +104,14 @@ const ExpensesNewRoute = ExpensesNewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRoute
+  '/backup': typeof BackupRoute
   '/dashboard': typeof DashboardRoute
   '/expenses': typeof ExpensesRouteWithChildren
   '/inventory': typeof InventoryRouteWithChildren
   '/purchases': typeof PurchasesRouteWithChildren
   '/reports': typeof ReportsRoute
   '/sales': typeof SalesRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/setup': typeof SetupRoute
   '/expenses/new': typeof ExpensesNewRoute
   '/inventory/new': typeof InventoryNewRoute
@@ -107,12 +121,14 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRoute
+  '/backup': typeof BackupRoute
   '/dashboard': typeof DashboardRoute
   '/expenses': typeof ExpensesRouteWithChildren
   '/inventory': typeof InventoryRouteWithChildren
   '/purchases': typeof PurchasesRouteWithChildren
   '/reports': typeof ReportsRoute
   '/sales': typeof SalesRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/setup': typeof SetupRoute
   '/expenses/new': typeof ExpensesNewRoute
   '/inventory/new': typeof InventoryNewRoute
@@ -123,12 +139,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/accounts': typeof AccountsRoute
+  '/backup': typeof BackupRoute
   '/dashboard': typeof DashboardRoute
   '/expenses': typeof ExpensesRouteWithChildren
   '/inventory': typeof InventoryRouteWithChildren
   '/purchases': typeof PurchasesRouteWithChildren
   '/reports': typeof ReportsRoute
   '/sales': typeof SalesRouteWithChildren
+  '/settings': typeof SettingsRoute
   '/setup': typeof SetupRoute
   '/expenses/new': typeof ExpensesNewRoute
   '/inventory/new': typeof InventoryNewRoute
@@ -140,12 +158,14 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/accounts'
+    | '/backup'
     | '/dashboard'
     | '/expenses'
     | '/inventory'
     | '/purchases'
     | '/reports'
     | '/sales'
+    | '/settings'
     | '/setup'
     | '/expenses/new'
     | '/inventory/new'
@@ -155,12 +175,14 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/accounts'
+    | '/backup'
     | '/dashboard'
     | '/expenses'
     | '/inventory'
     | '/purchases'
     | '/reports'
     | '/sales'
+    | '/settings'
     | '/setup'
     | '/expenses/new'
     | '/inventory/new'
@@ -170,12 +192,14 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/accounts'
+    | '/backup'
     | '/dashboard'
     | '/expenses'
     | '/inventory'
     | '/purchases'
     | '/reports'
     | '/sales'
+    | '/settings'
     | '/setup'
     | '/expenses/new'
     | '/inventory/new'
@@ -186,12 +210,14 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountsRoute: typeof AccountsRoute
+  BackupRoute: typeof BackupRoute
   DashboardRoute: typeof DashboardRoute
   ExpensesRoute: typeof ExpensesRouteWithChildren
   InventoryRoute: typeof InventoryRouteWithChildren
   PurchasesRoute: typeof PurchasesRouteWithChildren
   ReportsRoute: typeof ReportsRoute
   SalesRoute: typeof SalesRouteWithChildren
+  SettingsRoute: typeof SettingsRoute
   SetupRoute: typeof SetupRoute
 }
 
@@ -202,6 +228,13 @@ declare module '@tanstack/react-router' {
       path: '/setup'
       fullPath: '/setup'
       preLoaderRoute: typeof SetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sales': {
@@ -244,6 +277,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backup': {
+      id: '/backup'
+      path: '/backup'
+      fullPath: '/backup'
+      preLoaderRoute: typeof BackupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/accounts': {
@@ -340,12 +380,14 @@ const SalesRouteWithChildren = SalesRoute._addFileChildren(SalesRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountsRoute: AccountsRoute,
+  BackupRoute: BackupRoute,
   DashboardRoute: DashboardRoute,
   ExpensesRoute: ExpensesRouteWithChildren,
   InventoryRoute: InventoryRouteWithChildren,
   PurchasesRoute: PurchasesRouteWithChildren,
   ReportsRoute: ReportsRoute,
   SalesRoute: SalesRouteWithChildren,
+  SettingsRoute: SettingsRoute,
   SetupRoute: SetupRoute,
 }
 export const routeTree = rootRouteImport
