@@ -3,6 +3,7 @@
 import localforage from "localforage";
 import type { Database, SqlJsStatic } from "sql.js";
 import { SCHEMA_SQL, SEED_ACCOUNTS_SQL } from "./schema";
+import wasmUrl from "sql.js/dist/sql-wasm.wasm?url";
 
 const STORE_KEY = "ais.sqlite.db";
 const store = localforage.createInstance({ name: "ais-ledger", storeName: "db" });
@@ -13,10 +14,8 @@ let initPromise: Promise<Database> | null = null;
 
 async function loadSqlJs(): Promise<SqlJsStatic> {
   if (SQL) return SQL;
-  const initSqlJs = (await import("sql.js")).default;
-  SQL = await initSqlJs({
-    locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/${file}`,
-  });
+  const initSqlJs = (await import("sql.js/dist/sql-wasm.js")).default;
+  SQL = await initSqlJs({ locateFile: () => wasmUrl });
   return SQL!;
 }
 
