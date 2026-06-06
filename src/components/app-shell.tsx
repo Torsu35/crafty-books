@@ -26,6 +26,13 @@ const NAV = [
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
+const BOTTOM_NAV = [
+  { to: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { to: "/sales", label: "Sales", icon: ShoppingCart },
+  { to: "/expenses", label: "Expenses", icon: Receipt },
+  { to: "/reports", label: "Reports", icon: FileBarChart },
+] as const;
+
 export function AppShell({
   title,
   children,
@@ -40,14 +47,9 @@ export function AppShell({
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Sidebar (desktop) */}
-      <aside className="hidden w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground lg:flex">
-        <SidebarContent pathname={pathname} />
-      </aside>
-
-      {/* Mobile drawer */}
+      {/* Drawer (all sizes) */}
       {open && (
-        <div className="fixed inset-0 z-40 lg:hidden">
+        <div className="fixed inset-0 z-40">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
           <aside className="absolute left-0 top-0 flex h-full w-72 flex-col bg-sidebar text-sidebar-foreground shadow-2xl">
             <SidebarContent pathname={pathname} onNavigate={() => setOpen(false)} />
@@ -56,21 +58,44 @@ export function AppShell({
       )}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b bg-card/95 px-4 backdrop-blur lg:px-8">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-card/95 px-3 backdrop-blur">
           <button
             type="button"
             onClick={() => setOpen(true)}
-            className="rounded-md p-2 text-foreground hover:bg-muted lg:hidden"
+            className="rounded-md p-2 text-foreground hover:bg-muted"
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
           </button>
-          <h1 className="flex-1 truncate text-lg font-semibold tracking-tight text-foreground">
+          <h1 className="flex-1 truncate text-base font-semibold tracking-tight text-foreground">
             {title}
           </h1>
           {action}
         </header>
-        <main className="flex-1 px-4 py-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="flex-1 px-4 py-5 pb-24">{children}</main>
+        <nav
+          className="fixed inset-x-0 bottom-0 z-30 flex h-16 items-stretch border-t bg-card/95 backdrop-blur"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
+          {BOTTOM_NAV.map((item) => {
+            const Icon = item.icon;
+            const active =
+              pathname === item.to || pathname.startsWith(item.to + "/");
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "flex flex-1 flex-col items-center justify-center gap-1 text-[11px] font-medium transition-colors",
+                  active ? "text-primary" : "text-muted-foreground",
+                )}
+              >
+                <Icon className="h-5 w-5" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
       </div>
     </div>
   );
