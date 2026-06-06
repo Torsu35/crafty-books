@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as SalesRouteImport } from './routes/sales'
 import { Route as PurchasesRouteImport } from './routes/purchases'
+import { Route as ExpensesRouteImport } from './routes/expenses'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SalesNewRouteImport } from './routes/sales.new'
 import { Route as PurchasesNewRouteImport } from './routes/purchases.new'
+import { Route as ExpensesNewRouteImport } from './routes/expenses.new'
 
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
@@ -30,6 +32,11 @@ const SalesRoute = SalesRouteImport.update({
 const PurchasesRoute = PurchasesRouteImport.update({
   id: '/purchases',
   path: '/purchases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpensesRoute = ExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -52,22 +59,31 @@ const PurchasesNewRoute = PurchasesNewRouteImport.update({
   path: '/new',
   getParentRoute: () => PurchasesRoute,
 } as any)
+const ExpensesNewRoute = ExpensesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ExpensesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/expenses': typeof ExpensesRouteWithChildren
   '/purchases': typeof PurchasesRouteWithChildren
   '/sales': typeof SalesRouteWithChildren
   '/setup': typeof SetupRoute
+  '/expenses/new': typeof ExpensesNewRoute
   '/purchases/new': typeof PurchasesNewRoute
   '/sales/new': typeof SalesNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/expenses': typeof ExpensesRouteWithChildren
   '/purchases': typeof PurchasesRouteWithChildren
   '/sales': typeof SalesRouteWithChildren
   '/setup': typeof SetupRoute
+  '/expenses/new': typeof ExpensesNewRoute
   '/purchases/new': typeof PurchasesNewRoute
   '/sales/new': typeof SalesNewRoute
 }
@@ -75,9 +91,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/expenses': typeof ExpensesRouteWithChildren
   '/purchases': typeof PurchasesRouteWithChildren
   '/sales': typeof SalesRouteWithChildren
   '/setup': typeof SetupRoute
+  '/expenses/new': typeof ExpensesNewRoute
   '/purchases/new': typeof PurchasesNewRoute
   '/sales/new': typeof SalesNewRoute
 }
@@ -86,27 +104,33 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
+    | '/expenses'
     | '/purchases'
     | '/sales'
     | '/setup'
+    | '/expenses/new'
     | '/purchases/new'
     | '/sales/new'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/dashboard'
+    | '/expenses'
     | '/purchases'
     | '/sales'
     | '/setup'
+    | '/expenses/new'
     | '/purchases/new'
     | '/sales/new'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
+    | '/expenses'
     | '/purchases'
     | '/sales'
     | '/setup'
+    | '/expenses/new'
     | '/purchases/new'
     | '/sales/new'
   fileRoutesById: FileRoutesById
@@ -114,6 +138,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  ExpensesRoute: typeof ExpensesRouteWithChildren
   PurchasesRoute: typeof PurchasesRouteWithChildren
   SalesRoute: typeof SalesRouteWithChildren
   SetupRoute: typeof SetupRoute
@@ -140,6 +165,13 @@ declare module '@tanstack/react-router' {
       path: '/purchases'
       fullPath: '/purchases'
       preLoaderRoute: typeof PurchasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expenses': {
+      id: '/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof ExpensesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -170,8 +202,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PurchasesNewRouteImport
       parentRoute: typeof PurchasesRoute
     }
+    '/expenses/new': {
+      id: '/expenses/new'
+      path: '/new'
+      fullPath: '/expenses/new'
+      preLoaderRoute: typeof ExpensesNewRouteImport
+      parentRoute: typeof ExpensesRoute
+    }
   }
 }
+
+interface ExpensesRouteChildren {
+  ExpensesNewRoute: typeof ExpensesNewRoute
+}
+
+const ExpensesRouteChildren: ExpensesRouteChildren = {
+  ExpensesNewRoute: ExpensesNewRoute,
+}
+
+const ExpensesRouteWithChildren = ExpensesRoute._addFileChildren(
+  ExpensesRouteChildren,
+)
 
 interface PurchasesRouteChildren {
   PurchasesNewRoute: typeof PurchasesNewRoute
@@ -198,6 +249,7 @@ const SalesRouteWithChildren = SalesRoute._addFileChildren(SalesRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  ExpensesRoute: ExpensesRouteWithChildren,
   PurchasesRoute: PurchasesRouteWithChildren,
   SalesRoute: SalesRouteWithChildren,
   SetupRoute: SetupRoute,
