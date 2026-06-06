@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SetupRouteImport } from './routes/setup'
 import { Route as SalesRouteImport } from './routes/sales'
+import { Route as PurchasesRouteImport } from './routes/purchases'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SalesNewRouteImport } from './routes/sales.new'
+import { Route as PurchasesNewRouteImport } from './routes/purchases.new'
 
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
@@ -22,6 +25,11 @@ const SetupRoute = SetupRouteImport.update({
 const SalesRoute = SalesRouteImport.update({
   id: '/sales',
   path: '/sales',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PurchasesRoute = PurchasesRouteImport.update({
+  id: '/purchases',
+  path: '/purchases',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -34,38 +42,80 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SalesNewRoute = SalesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => SalesRoute,
+} as any)
+const PurchasesNewRoute = PurchasesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => PurchasesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/sales': typeof SalesRoute
+  '/purchases': typeof PurchasesRouteWithChildren
+  '/sales': typeof SalesRouteWithChildren
   '/setup': typeof SetupRoute
+  '/purchases/new': typeof PurchasesNewRoute
+  '/sales/new': typeof SalesNewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/sales': typeof SalesRoute
+  '/purchases': typeof PurchasesRouteWithChildren
+  '/sales': typeof SalesRouteWithChildren
   '/setup': typeof SetupRoute
+  '/purchases/new': typeof PurchasesNewRoute
+  '/sales/new': typeof SalesNewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
-  '/sales': typeof SalesRoute
+  '/purchases': typeof PurchasesRouteWithChildren
+  '/sales': typeof SalesRouteWithChildren
   '/setup': typeof SetupRoute
+  '/purchases/new': typeof PurchasesNewRoute
+  '/sales/new': typeof SalesNewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/sales' | '/setup'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/purchases'
+    | '/sales'
+    | '/setup'
+    | '/purchases/new'
+    | '/sales/new'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/sales' | '/setup'
-  id: '__root__' | '/' | '/dashboard' | '/sales' | '/setup'
+  to:
+    | '/'
+    | '/dashboard'
+    | '/purchases'
+    | '/sales'
+    | '/setup'
+    | '/purchases/new'
+    | '/sales/new'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/purchases'
+    | '/sales'
+    | '/setup'
+    | '/purchases/new'
+    | '/sales/new'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
-  SalesRoute: typeof SalesRoute
+  PurchasesRoute: typeof PurchasesRouteWithChildren
+  SalesRoute: typeof SalesRouteWithChildren
   SetupRoute: typeof SetupRoute
 }
 
@@ -85,6 +135,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SalesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/purchases': {
+      id: '/purchases'
+      path: '/purchases'
+      fullPath: '/purchases'
+      preLoaderRoute: typeof PurchasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -99,13 +156,50 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sales/new': {
+      id: '/sales/new'
+      path: '/new'
+      fullPath: '/sales/new'
+      preLoaderRoute: typeof SalesNewRouteImport
+      parentRoute: typeof SalesRoute
+    }
+    '/purchases/new': {
+      id: '/purchases/new'
+      path: '/new'
+      fullPath: '/purchases/new'
+      preLoaderRoute: typeof PurchasesNewRouteImport
+      parentRoute: typeof PurchasesRoute
+    }
   }
 }
+
+interface PurchasesRouteChildren {
+  PurchasesNewRoute: typeof PurchasesNewRoute
+}
+
+const PurchasesRouteChildren: PurchasesRouteChildren = {
+  PurchasesNewRoute: PurchasesNewRoute,
+}
+
+const PurchasesRouteWithChildren = PurchasesRoute._addFileChildren(
+  PurchasesRouteChildren,
+)
+
+interface SalesRouteChildren {
+  SalesNewRoute: typeof SalesNewRoute
+}
+
+const SalesRouteChildren: SalesRouteChildren = {
+  SalesNewRoute: SalesNewRoute,
+}
+
+const SalesRouteWithChildren = SalesRoute._addFileChildren(SalesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
-  SalesRoute: SalesRoute,
+  PurchasesRoute: PurchasesRouteWithChildren,
+  SalesRoute: SalesRouteWithChildren,
   SetupRoute: SetupRoute,
 }
 export const routeTree = rootRouteImport
