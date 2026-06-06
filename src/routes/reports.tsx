@@ -18,7 +18,6 @@ import {
 } from "@/lib/accounting";
 import { formatGHS, periodRange } from "@/lib/format";
 import { useDbReady, useProfile } from "@/lib/use-db";
-import jsPDF from "jspdf";
 
 export const Route = createFileRoute("/reports")({
   head: () => ({ meta: [{ title: "Reports — Ledger" }] }),
@@ -46,8 +45,9 @@ function Reports() {
     balanceSheet(range.end).then(setBs);
   }, [ready, kind, range.start, range.end]);
 
-  const downloadPdf = () => {
+  const downloadPdf = async () => {
     if (!is || !bs || !profile) return;
+    const { default: jsPDF } = await import("jspdf");
     const doc = new jsPDF();
     let y = 16;
     doc.setFontSize(16);
