@@ -15,7 +15,7 @@ async function loadSqlJs(): Promise<SqlJsStatic> {
   if (SQL) return SQL;
   const initSqlJs = (await import("sql.js")).default;
   SQL = await initSqlJs({
-    locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
+    locateFile: (file: string) => `https://cdn.jsdelivr.net/npm/sql.js@1.13.0/dist/${file}`,
   });
   return SQL!;
 }
