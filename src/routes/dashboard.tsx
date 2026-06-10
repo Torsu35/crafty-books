@@ -83,6 +83,7 @@ function Dashboard() {
   }
 
   const { start, end, label } = periodRange(profile.period_pref);
+  const serviceOnly = profile.business_type === "services";
 
   return (
     <AppShell
@@ -91,7 +92,7 @@ function Dashboard() {
         <div className="hidden gap-2 sm:flex">
           <Button asChild size="sm" variant="outline">
             <Link to="/sales/new">
-              <Plus className="mr-1 h-4 w-4" /> Sale
+              <Plus className="mr-1 h-4 w-4" /> {serviceOnly ? "Service" : "Sale"}
             </Link>
           </Button>
           <Button asChild size="sm">
@@ -147,10 +148,13 @@ function Dashboard() {
             title="Quick actions"
           >
             <div className="grid grid-cols-2 gap-2">
-              <QuickLink to="/sales/new" label="Record sale" />
-              <QuickLink to="/purchases/new" label="Record purchase" />
+              <QuickLink
+                to="/sales/new"
+                label={serviceOnly ? "Record service" : "Record sale"}
+              />
+              {!serviceOnly && <QuickLink to="/purchases/new" label="Record purchase" />}
               <QuickLink to="/expenses/new" label="Add expense" />
-              <QuickLink to="/inventory/new" label="Add inventory" />
+              {!serviceOnly && <QuickLink to="/inventory/new" label="Add inventory" />}
               <QuickLink to="/reports" label="View reports" />
               <QuickLink to="/backup" label="Backup data" />
             </div>
@@ -158,6 +162,7 @@ function Dashboard() {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
+          {!serviceOnly && (
           <Card
             title="Low stock alerts"
             action={
@@ -187,6 +192,7 @@ function Dashboard() {
               </ul>
             )}
           </Card>
+          )}
 
           <Card title="Recent activity">
             {stats.recent.length === 0 ? (
