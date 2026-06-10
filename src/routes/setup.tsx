@@ -36,7 +36,7 @@ function Setup() {
   const [biz, setBiz] = useState({
     business_name: "",
     owner_name: "",
-    business_type: "Retail",
+    business_type: "goods" as "goods" | "services" | "both",
     vat_registered: 0,
     tax_id: "",
     period_pref: "month" as "month" | "quarter" | "year",
@@ -136,34 +136,39 @@ function Setup() {
                   placeholder="e.g. Ama Mensah"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label>Business type</Label>
-                  <Select
-                    value={biz.business_type}
-                    onValueChange={(v) => setBiz({ ...biz, business_type: v })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Retail">Retail / Shop</SelectItem>
-                      <SelectItem value="Wholesale">Wholesale / Trading</SelectItem>
-                      <SelectItem value="Service">Service</SelectItem>
-                      <SelectItem value="Food">Food & Beverages</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="tx">Tax ID (optional)</Label>
-                  <Input
-                    id="tx"
-                    value={biz.tax_id}
-                    onChange={(e) => setBiz({ ...biz, tax_id: e.target.value })}
-                    placeholder="TIN"
-                  />
-                </div>
+              <div>
+                <Label className="mb-2 block">What does your business do?</Label>
+                <RadioGroup
+                  value={biz.business_type}
+                  onValueChange={(v) =>
+                    setBiz({ ...biz, business_type: v as "goods" | "services" | "both" })
+                  }
+                  className="grid grid-cols-3 gap-2"
+                >
+                  {[
+                    { v: "goods", l: "Sells goods" },
+                    { v: "services", l: "Renders services" },
+                    { v: "both", l: "Both" },
+                  ].map((o) => (
+                    <label
+                      key={o.v}
+                      htmlFor={`bt-${o.v}`}
+                      className="flex cursor-pointer items-center justify-center rounded-lg border bg-card px-3 py-3 text-center text-sm hover:border-ring has-[input:checked]:border-primary has-[input:checked]:bg-primary has-[input:checked]:text-primary-foreground"
+                    >
+                      <RadioGroupItem id={`bt-${o.v}`} value={o.v} className="sr-only" />
+                      {o.l}
+                    </label>
+                  ))}
+                </RadioGroup>
+              </div>
+              <div>
+                <Label htmlFor="tx">Tax ID (optional)</Label>
+                <Input
+                  id="tx"
+                  value={biz.tax_id}
+                  onChange={(e) => setBiz({ ...biz, tax_id: e.target.value })}
+                  placeholder="TIN"
+                />
               </div>
             </div>
           )}
