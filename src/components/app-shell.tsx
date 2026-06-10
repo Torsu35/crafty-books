@@ -13,25 +13,41 @@ import {
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useProfile } from "@/lib/use-db";
 
-const NAV = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/sales", label: "Sales", icon: ShoppingCart },
-  { to: "/purchases", label: "Purchases", icon: Package },
-  { to: "/expenses", label: "Expenses", icon: Receipt },
-  { to: "/inventory", label: "Inventory", icon: Package },
-  { to: "/accounts", label: "Money", icon: Wallet },
-  { to: "/reports", label: "Reports", icon: FileBarChart },
-  { to: "/backup", label: "Backup", icon: Database },
-  { to: "/settings", label: "Settings", icon: Settings },
-] as const;
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard };
 
-const BOTTOM_NAV = [
-  { to: "/dashboard", label: "Home", icon: LayoutDashboard },
-  { to: "/sales", label: "Sales", icon: ShoppingCart },
-  { to: "/expenses", label: "Expenses", icon: Receipt },
-  { to: "/reports", label: "Reports", icon: FileBarChart },
-] as const;
+function buildNav(businessType: string | null | undefined): NavItem[] {
+  const serviceOnly = businessType === "services";
+  const items: NavItem[] = [
+    { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/sales", label: serviceOnly ? "Services" : "Sales", icon: ShoppingCart },
+  ];
+  if (!serviceOnly) {
+    items.push({ to: "/purchases", label: "Purchases", icon: Package });
+  }
+  items.push({ to: "/expenses", label: "Expenses", icon: Receipt });
+  if (!serviceOnly) {
+    items.push({ to: "/inventory", label: "Inventory", icon: Package });
+  }
+  items.push(
+    { to: "/accounts", label: "Money", icon: Wallet },
+    { to: "/reports", label: "Reports", icon: FileBarChart },
+    { to: "/backup", label: "Backup", icon: Database },
+    { to: "/settings", label: "Settings", icon: Settings },
+  );
+  return items;
+}
+
+function buildBottomNav(businessType: string | null | undefined): NavItem[] {
+  const serviceOnly = businessType === "services";
+  return [
+    { to: "/dashboard", label: "Home", icon: LayoutDashboard },
+    { to: "/sales", label: serviceOnly ? "Services" : "Sales", icon: ShoppingCart },
+    { to: "/expenses", label: "Expenses", icon: Receipt },
+    { to: "/reports", label: "Reports", icon: FileBarChart },
+  ];
+}
 
 export function AppShell({
   title,
@@ -44,6 +60,9 @@ export function AppShell({
 }) {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { profile } = useProfile();
+  const nav = buildNav(profile?.business_type);
+  const bottomNav = buildBottomNav(profile?.business_type);
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -52,7 +71,7 @@ export function AppShell({
         <div className="fixed inset-0 z-40">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
           <aside className="absolute left-0 top-0 flex h-full w-72 flex-col bg-sidebar text-sidebar-foreground shadow-2xl">
-            <SidebarContent pathname={pathname} onNavigate={() => setOpen(false)} />
+            <SidebarContent pathname={pathname} items={nav} onNavigate={() => setOpen(false)} />
           </aside>
         </div>
       )}
@@ -77,7 +96,7 @@ export function AppShell({
           className="fixed inset-x-0 bottom-0 z-30 flex h-16 items-stretch border-t bg-card/95 backdrop-blur"
           style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
-          {BOTTOM_NAV.map((item) => {
+          {bottomNav.map((item) => {
             const Icon = item.icon;
             const active =
               pathname === item.to || pathname.startsWith(item.to + "/");
@@ -103,9 +122,11 @@ export function AppShell({
 
 function SidebarContent({
   pathname,
+  items,
   onNavigate,
 }: {
   pathname: string;
+  items: NavItem[];
   onNavigate?: () => void;
 }) {
   return (
@@ -131,7 +152,7 @@ function SidebarContent({
         )}
       </div>
       <nav className="flex-1 space-y-0.5 px-3 py-2">
-        {NAV.map((item) => {
+        {items.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.to || pathname.startsWith(item.to + "/");
           return (
