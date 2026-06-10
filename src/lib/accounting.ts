@@ -55,6 +55,8 @@ export interface SaleInput {
   vatPesewas: number;
   notes?: string;
   lines: SaleLineInput[];
+  /** Revenue account to credit. Defaults to "4000" (Sales). Use "4100" for services. */
+  revenueAccount?: string;
 }
 
 export async function recordSale(input: SaleInput): Promise<number> {
@@ -122,7 +124,7 @@ export async function recordSale(input: SaleInput): Promise<number> {
 
   const lines: JLine[] = [
     { account: debitAcct, debit: total },
-    { account: "4000", credit: subtotal },
+    { account: input.revenueAccount || "4000", credit: subtotal },
   ];
   if (input.vatPesewas > 0) lines.push({ account: "2200", credit: input.vatPesewas });
   if (totalCogs > 0) {
