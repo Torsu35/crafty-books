@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Ledger",
+    "slug": "ledger-mobile",
+    "scheme": "ledger",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": false,
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.ledger.mobile" },
+    "android": { "package": "com.ledger.mobile" },
+    "plugins": ["expo-router"],
+    "experiments": { "typedRoutes": false }
+  }
+}
