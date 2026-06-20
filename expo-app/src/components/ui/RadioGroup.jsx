@@ -14,14 +14,18 @@ export function RadioGroup({ value, onChange, options, columns = 3 }) {
           <View key={o.value} className={`${colClass} px-1 mb-2`}>
             <Pressable
               onPress={() => onChange(o.value)}
-              className={`rounded-xl border px-3 py-3 items-center ${
+              className={`rounded-xl border px-2 h-14 items-center justify-center ${
                 active ? "bg-primary border-primary" : "bg-card border-border"
               }`}
             >
               <Text
+                numberOfLines={2}
+                adjustsFontSizeToFit
+                minimumFontScale={0.85}
                 className={`text-sm font-semibold ${
                   active ? "text-primary-foreground" : "text-foreground"
                 }`}
+                style={{ textAlign: "center" }}
               >
                 {o.label}
               </Text>
