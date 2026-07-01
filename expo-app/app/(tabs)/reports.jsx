@@ -16,6 +16,7 @@ export default function Reports() {
   const [kind, setKind] = useState("month");
   const [is, setIs] = useState(null);
   const [bs, setBs] = useState(null);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => { if (profile) setKind(profile.period_pref); }, [profile]);
 
@@ -26,6 +27,18 @@ export default function Reports() {
       setBs(balanceSheet(range.end));
     }, [range.start, range.end]),
   );
+
+  const handleShare = async () => {
+    if (!is || !bs) return;
+    setSharing(true);
+    try {
+      await shareFinancialReport(range, profile);
+    } catch (e) {
+      Alert.alert("Share failed", e.message);
+    } finally {
+      setSharing(false);
+    }
+  };
 
   return (
     <Screen title="Reports">
@@ -39,6 +52,16 @@ export default function Reports() {
             { value: "year", label: "Year" },
           ]}
         />
+      </View>
+
+      <View className="mb-4">
+        <Button
+          onPress={handleShare}
+          loading={sharing}
+          leftIcon={<FileText size={16} color="#fff" />}
+        >
+          Share PDF report
+        </Button>
       </View>
 
       {is && (
