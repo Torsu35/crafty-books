@@ -14,6 +14,7 @@
     "expo-sqlite": "~17.0.0",
     "expo-file-system": "~20.0.0",
     "expo-sharing": "~15.0.0",
+    "expo-print": "~14.0.0",
     "expo-document-picker": "~15.0.0",
     "expo-constants": "~19.0.0",
     "expo-linking": "~9.0.0",

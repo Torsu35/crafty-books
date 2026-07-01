@@ -1,18 +1,22 @@
 import { useState, useCallback, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import { useFocusEffect } from "expo-router";
+import { FileText } from "lucide-react-native";
 import { Screen } from "../../src/components/Screen";
 import { Card } from "../../src/components/ui/Card";
+import { Button } from "../../src/components/ui/Button";
 import { RadioGroup } from "../../src/components/ui/RadioGroup";
 import { balanceSheet, incomeStatement } from "../../src/lib/accounting";
 import { formatGHS, periodRange } from "../../src/lib/format";
 import { useProfile } from "../../src/lib/use-db";
+import { shareFinancialReport } from "../../src/lib/reports";
 
 export default function Reports() {
   const { profile } = useProfile();
   const [kind, setKind] = useState("month");
   const [is, setIs] = useState(null);
   const [bs, setBs] = useState(null);
+  const [sharing, setSharing] = useState(false);
 
   useEffect(() => { if (profile) setKind(profile.period_pref); }, [profile]);
 
@@ -23,6 +27,18 @@ export default function Reports() {
       setBs(balanceSheet(range.end));
     }, [range.start, range.end]),
   );
+
+  const handleShare = async () => {
+    if (!is || !bs) return;
+    setSharing(true);
+    try {
+      await shareFinancialReport(range, profile);
+    } catch (e) {
+      Alert.alert("Share failed", e.message);
+    } finally {
+      setSharing(false);
+    }
+  };
 
   return (
     <Screen title="Reports">
@@ -36,6 +52,16 @@ export default function Reports() {
             { value: "year", label: "Year" },
           ]}
         />
+      </View>
+
+      <View className="mb-4">
+        <Button
+          onPress={handleShare}
+          loading={sharing}
+          leftIcon={<FileText size={16} color="#fff" />}
+        >
+          Share PDF report
+        </Button>
       </View>
 
       {is && (
