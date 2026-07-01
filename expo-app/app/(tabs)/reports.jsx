@@ -1,12 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 import { useFocusEffect } from "expo-router";
+import { FileText } from "lucide-react-native";
 import { Screen } from "../../src/components/Screen";
 import { Card } from "../../src/components/ui/Card";
+import { Button } from "../../src/components/ui/Button";
 import { RadioGroup } from "../../src/components/ui/RadioGroup";
 import { balanceSheet, incomeStatement } from "../../src/lib/accounting";
 import { formatGHS, periodRange } from "../../src/lib/format";
 import { useProfile } from "../../src/lib/use-db";
+import { shareFinancialReport } from "../../src/lib/reports";
 
 export default function Reports() {
   const { profile } = useProfile();
